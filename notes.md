@@ -346,3 +346,77 @@ you can mix variable-arity and normal parameters but the rest param has to come 
 
 (favorite-things "Doreen" "gum" "shoes" "kara-te")
 ```
+
+
+```
+(defn my-first
+  [[first-thing]] ; Notice that first-thing is within a vector
+  first-thing)
+
+(my-first ["oven" "bike" "war-axe"])
+; => "oven"
+```
+
+by placing an argument in a vector, Clojure knows it is about to recieve a vector. in the example above the method would return the first element in the vector.
+
+you can also use rest paramters within the vector
+
+`[[first-choice second-choice & unimportant-choices]]`
+
+maps can also be deconstructed in the same way
+
+```
+(defn announce-treasure-location
+    [{lat :lat lng :lng}]
+  (println (str "Treasure lat: " lat))
+  (println (str "Treasure lng: " lng)))
+
+(announce-treasure-location {:lat 28.22 :lng 81.33})
+```
+
+there is a quicker syntax so not to point all keys to the values
+
+`[{:keys [lat lng]}]`
+
+if you use the keyword `:as` you can retain access to the original map.
+
+`[{:keys [lat lng] :as treasure-location}]`
+
+##### Function body
+
+the function body can contain forms of any kind.
+
+CLojure automatically returns the last form evaluated.
+
+All functions are equal in clojure - does not care if it is an inbuilt library function or one you created yourself.
+
+##### Anonymous functions
+
+anonymous functions are created in the same way.
+
+you can create them in 2 ways...
+
+```
+(fn [param-list]
+  function body)
+```
+
+clojure also offers another, more compact way to create functions.
+
+`#(* % 3)`
+
+here is an example of passing an anonymous function as an argument to map.
+
+This feature is made possible by a feature called reader macros.
+
+`#(* % 3)` anonymous function the `%` indicates the arguemnt passed to the function.
+
+`(#(str %1 " and " %2) "cornbread" "butter beans")`
+
+you can also pass the rest parameter...
+
+`(#(identity %&) 1 "blarg" :yip)`
+
+##### Returning functions
+
+Functions can return other functions. The returned functions are the closures. They can access all the variables that were in the scope when the functions were created.
